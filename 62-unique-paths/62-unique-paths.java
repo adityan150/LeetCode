@@ -1,16 +1,25 @@
 class Solution {
     public static int uniquePaths(int m, int n) {
-        int[][] dp = new int[m][n];
-        for (int i = 0; i < m; i++) {
-            dp[i][n-1] = 1;
-        }
-        Arrays.fill(dp[m-1], 1);
+        if (m == 1 || n == 1) return 1;
         
-        for (int i = m-2; i>= 0; i--) {
-            for (int j = n-2; j>=0; j--) {
-                dp[i][j] = dp[i+1][j] + dp[i][j+1];
-            }
+        // we have m-1 Downs and n-1 Rights
+        // no. of ways to arrange = [(m-1)+(n-1)]! /m-1! * n-1!
+        // instead of finding factorial, multiply and divide at the same time
+        
+        // (m * m+1 * m+2 * ... (m-1)+(n-1)) / 1 * 2 * 3 .... * n-1
+        // m-1 m-2 m-3 .... 2 1 : divided by m-1!] 
+        if (n > m) {        // if n is greater, swap
+            int temp = n;
+            n = m;
+            m = temp;
         }
-        return dp[0][0];
+        
+        long res = 1;
+        int j = 1;
+        for (int i = m; i <= m+n-2; i++, j++) {
+            res *= i;
+            res /= j;
+        }
+        return (int)res;
     }
 }
