@@ -6,24 +6,18 @@ class Solution {
         if (sum % 2 != 0) return false;
         sum = sum / 2;
         
-        boolean[][] dp = new boolean[nums.length+1][sum+1];
-        // initialization
-        for (int i = 0; i <= nums.length; i++)
-            dp[i][0] = true;
-        for (int i = 1; i <= sum; i++)
-            dp[0][i] = false;
+        boolean[] dp = new boolean[sum+1];
+        dp[0] = true;
         
         // tabulation
         for (int i = 1; i <= nums.length; i++) {
-            for (int j = 1; j <= sum; j++) {
+            for (int j = sum; j >= 1; j--) {
                 if (j >= nums[i-1])
-                    dp[i][j] = dp[i-1][j] || dp[i-1][j-nums[i-1]];
-                else
-                    dp[i][j] = dp[i-1][j];
+                    dp[j] = dp[j] || dp[j - nums[i-1]];
             }
         }
         
-        return dp[nums.length][sum];
+        return dp[sum];
     }
     
 //     boolean subsetSum(int[] nums, int t, int i, Boolean[][] dp) {
